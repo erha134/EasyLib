@@ -1,5 +1,6 @@
 package io.github.erha134.easylib.util.container;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -7,13 +8,14 @@ import lombok.ToString;
 import java.util.function.Function;
 
 @Data
+@AllArgsConstructor
 @ToString(callSuper = false)
 @EqualsAndHashCode(callSuper = false)
 public final class Quad<A, B, C, D> {
-    private final A first;
-    private final B second;
-    private final C third;
-    private final D fourth;
+    private A first;
+    private B second;
+    private C third;
+    private D fourth;
 
     public boolean isFirstPresent() {
         return this.first != null;

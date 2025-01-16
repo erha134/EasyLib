@@ -1,4 +1,4 @@
-package io.github.erha134.easylib.fucntion.lazy;
+package io.github.erha134.easylib.lazy;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

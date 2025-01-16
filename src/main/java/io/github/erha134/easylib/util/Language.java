@@ -71,6 +71,16 @@ public class Language {
     }
 
     /**
+     * 获取格式化后的翻译。
+     * @param key 翻译键
+     * @param args 格式化参数
+     * @return 翻译
+     */
+    public String get(String key, Object... args) {
+        return StringFormatter.format(this.get(key), args);
+    }
+
+    /**
      * 获取翻译。
      * @param key 翻译键
      * @param fallback 默认翻译
@@ -78,6 +88,17 @@ public class Language {
      */
     public String get(String key, String fallback) {
         return this.map.getOrDefault(key, fallback);
+    }
+
+    /**
+     * 获取格式化后的翻译。
+     * @param key 翻译键
+     * @param fallback 默认翻译
+     * @param args 格式化参数
+     * @return 翻译
+     */
+    public String get(String key, String fallback, Object... args) {
+        return StringFormatter.format(this.get(key, fallback), args);
     }
 
     /**

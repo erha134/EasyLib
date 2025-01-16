@@ -1,5 +1,6 @@
 package io.github.erha134.easylib.util.container;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -7,12 +8,13 @@ import lombok.ToString;
 import java.util.function.Function;
 
 @Data
+@AllArgsConstructor
 @ToString(callSuper = false)
 @EqualsAndHashCode(callSuper = false)
 public final class Triple<A, B, C> {
-    private final A left;
-    private final B middle;
-    private final C right;
+    private A left;
+    private B middle;
+    private C right;
 
     public boolean isLeftPresent() {
         return this.left != null;

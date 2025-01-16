@@ -11,6 +11,10 @@ public class StringFormatter extends StringUtils {
      * @return 格式化后的字符串
      */
     public static String format(String s, Object... args) {
+        if (isEmpty(s)) {
+            return s;
+        }
+
         for (int i = 0; i < args.length; i++) {
             String str = toString(args[i]);
             s = s.replaceFirst("\\{}", str)

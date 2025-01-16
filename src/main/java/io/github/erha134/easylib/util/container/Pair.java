@@ -1,5 +1,6 @@
 package io.github.erha134.easylib.util.container;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -7,11 +8,12 @@ import lombok.ToString;
 import java.util.function.Function;
 
 @Data
+@AllArgsConstructor
 @ToString(callSuper = false)
 @EqualsAndHashCode(callSuper = false)
 public final class Pair<A, B> {
-    private final A left;
-    private final B right;
+    private A left;
+    private B right;
 
     public boolean isLeftPresent() {
         return this.left != null;
