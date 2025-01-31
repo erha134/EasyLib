@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - '**'
-  workflow_dispatch:
   pull_request:
     branches:
       - '**'
@@ -63,7 +62,7 @@ jobs:
           properties: "artifact_version"
 
       - name: create github release
-        if: github.repository_owner == 'erha134' && contains(github.event.head_commit.message, '[release]') == true
+        if: github.repository_owner == 'erha134' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           name: "${{ steps.prop_info.outputs.artifact_version }}"
