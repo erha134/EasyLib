@@ -1,87 +1,76 @@
 package io.github.erha134.easylib.collection;
 
+import io.github.erha134.easylib.stream.StreamUtils;
 import io.github.erha134.easylib.util.EnumerationUtils;
 import io.github.erha134.easylib.util.IterateUtils;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
-public final class ListUtils {
-    // ArrayList
-    public static <T> ArrayList<T> newArrayList() {
-        return new ArrayList<>();
+public class ListUtils {
+    public static <T> List<T> of() {
+        return of(false);
     }
 
     @SafeVarargs
-    public static <T> ArrayList<T> newArrayList(T... elements) {
+    public static <T> List<T> of(T... elements) {
+        return of(false, elements);
+    }
+
+    public static <T> List<T> of(Collection<? extends T> elements) {
+        return of(false, elements);
+    }
+
+    public static <T> List<T> of(Enumeration<? extends T> enumeration) {
+        return of(false, enumeration);
+    }
+
+    public static <T> List<T> of(Iterable<? extends T> it) {
+        return of(false, it);
+    }
+
+    public static <T> List<T> of(Iterator<? extends T> it) {
+        return of(false, it);
+    }
+
+    public static <T> List<T> of(Stream<? extends T> stream) {
+        return of(false, stream);
+    }
+
+    public static <T> List<T> of(boolean linked) {
+        return linked ? new LinkedList<>() : new ArrayList<>();
+    }
+
+    @SafeVarargs
+    public static <T> List<T> of(boolean linked, T... elements) {
+        if (linked) {
+            return new LinkedList<>(Arrays.asList(elements));
+        }
+
         return new ArrayList<>(Arrays.asList(elements));
     }
 
-    public static <T> ArrayList<T> newArrayList(Iterable<T> it) {
-        final ArrayList<T> list = newArrayList();
-        IterateUtils.toStream(it).forEach(list::add);
-        return list;
+    public static <T> List<T> of(boolean linked, Collection<? extends T> elements) {
+        if (linked) {
+            return new LinkedList<>(elements);
+        }
+
+        return new ArrayList<>(elements);
     }
 
-    public static <T> ArrayList<T> newArrayList(Iterator<T> it) {
-        final ArrayList<T> list = newArrayList();
-        IterateUtils.toStream(it).forEach(list::add);
-        return list;
+    public static <T> List<T> of(boolean linked, Enumeration<? extends T> enumeration) {
+        return of(linked, EnumerationUtils.toIterator(enumeration));
     }
 
-    public static <T> ArrayList<T> newArrayList(Enumeration<T> enumeration) {
-        return newArrayList(EnumerationUtils.toIterator(enumeration));
+    public static <T> List<T> of(boolean linked, Iterable<? extends T> it) {
+        return of(linked, IterateUtils.toStream(it));
     }
 
-    // LinkedList
-    public static <T> LinkedList<T> newLinkedList() {
-        return new LinkedList<>();
+    public static <T> List<T> of(boolean linked, Iterator<? extends T> it) {
+        return of(linked, IterateUtils.toStream(it));
     }
 
-    @SafeVarargs
-    public static <T> LinkedList<T> newLinkedList(T... elements) {
-        return new LinkedList<>(Arrays.asList(elements));
-    }
-
-    public static <T> LinkedList<T> newLinkedList(Iterable<T> it) {
-        final LinkedList<T> list = newLinkedList();
-        IterateUtils.toStream(it).forEach(list::add);
-        return list;
-    }
-
-    public static <T> LinkedList<T> newLinkedList(Iterator<T> it) {
-        final LinkedList<T> list = newLinkedList();
-        IterateUtils.toStream(it).forEach(list::add);
-        return list;
-    }
-
-    public static <T> LinkedList<T> newLinkedList(Enumeration<T> enumeration) {
-        return newLinkedList(EnumerationUtils.toIterator(enumeration));
-    }
-
-    // CopyOnWriteArrayList
-    public static <T> CopyOnWriteArrayList<T> newCopyOnWriteArrayList() {
-        return new CopyOnWriteArrayList<>();
-    }
-
-    @SafeVarargs
-    public static <T> CopyOnWriteArrayList<T> newCopyOnWriteArrayList(T... elements) {
-        return new CopyOnWriteArrayList<>(Arrays.asList(elements));
-    }
-
-    public static <T> CopyOnWriteArrayList<T> newCopyOnWriteArrayList(Iterable<T> it) {
-        final CopyOnWriteArrayList<T> list = newCopyOnWriteArrayList();
-        IterateUtils.toStream(it).forEach(list::add);
-        return list;
-    }
-
-    public static <T> CopyOnWriteArrayList<T> newCopyOnWriteArrayList(Iterator<T> it) {
-        final CopyOnWriteArrayList<T> list = newCopyOnWriteArrayList();
-        IterateUtils.toStream(it).forEach(list::add);
-        return list;
-    }
-
-    public static <T> CopyOnWriteArrayList<T> newCopyOnWriteArrayList(Enumeration<T> enumeration) {
-        return newCopyOnWriteArrayList(EnumerationUtils.toIterator(enumeration));
+    public static <T> List<T> of(boolean linked, Stream<? extends T> stream) {
+        return of(linked, StreamUtils.toList(stream));
     }
 }

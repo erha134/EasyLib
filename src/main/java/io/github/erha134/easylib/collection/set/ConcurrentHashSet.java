@@ -1,34 +1,46 @@
 package io.github.erha134.easylib.collection.set;
 
-import org.jetbrains.annotations.ApiStatus;
+import io.github.erha134.easylib.util.IterateUtils;
+import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E> {
-    transient ConcurrentHashMap<E, Object> map;
+public class ConcurrentHashSet<E> extends AbstractSet<E> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    // Dummy
+    private final ConcurrentHashMap<E, Object> map;
     static final Object PRESENT = new Object();
 
     public ConcurrentHashSet() {
-        this.map = new ConcurrentHashMap<>();
-    }
-
-    public ConcurrentHashSet(Collection<? extends E> c) {
-        this();
-        addAll(c);
-    }
-
-    public ConcurrentHashSet(int initialCapacity, float loadFactor) {
-        this.map = new ConcurrentHashMap<>(initialCapacity, loadFactor);
+        map = new ConcurrentHashMap<>();
     }
 
     public ConcurrentHashSet(int initialCapacity) {
-        this.map = new ConcurrentHashMap<>(initialCapacity);
+        map = new ConcurrentHashMap<>(initialCapacity);
     }
 
+    public ConcurrentHashSet(int initialCapacity, float loadFactor) {
+        map = new ConcurrentHashMap<>(initialCapacity, loadFactor);
+    }
+
+    public ConcurrentHashSet(int initialCapacity, float loadFactor, int concurrencyLevel) {
+        map = new ConcurrentHashMap<>(initialCapacity, loadFactor, concurrencyLevel);
+    }
+
+    public ConcurrentHashSet(Collection<? extends E> c) {
+        this((int) (c.size() / 0.75f));
+        this.addAll(c);
+    }
+
+    public ConcurrentHashSet(Iterator<E> it) {
+        this(IterateUtils.toStream(it)
+                .collect(Collectors.toList()));
+    }
+
+    @NotNull
     @Override
     public Iterator<E> iterator() {
         return this.map.keySet().iterator();
@@ -51,51 +63,16 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E> {
 
     @Override
     public boolean add(E e) {
-        return this.map.put(e, PRESENT)==null;
+        return this.map.put(e, PRESENT) == null;
     }
 
     @Override
     public boolean remove(Object o) {
-        return this.map.remove(o)==PRESENT;
+        return this.map.remove(o) == PRESENT;
     }
 
     @Override
     public void clear() {
         this.map.clear();
-    }
-
-    @ApiStatus.Experimental
-    @Override
-    public Spliterator<E> spliterator() {
-        return Spliterators.spliteratorUnknownSize(this.iterator(),
-                Spliterator.DISTINCT | Spliterator.CONCURRENT | Spliterator.NONNULL);
-    }
-
-    @ApiStatus.Experimental
-    @Override
-    public Object[] toArray() {
-        return this.toArray(new Object[this.size()]);
-    }
-
-    @ApiStatus.Experimental
-    @Override
-    public <T> T[] toArray(T[] a) {
-        int i = 0;
-        for (E e : this.map.keySet()) {
-            ((Object[]) a)[i++] = e;
-        }
-
-        return a;
-    }
-
-    private <T> T[] prepareArray(T[] a) {
-        int size = this.size();
-        if (a.length < size) {
-            return (T[]) Array.newInstance(a.getClass().getComponentType(), size);
-        }
-        if (a.length > size) {
-            a[size] = null;
-        }
-        return a;
     }
 }
