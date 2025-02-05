@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StringUtilsTest {
+class StringUtilsTest {
     @Test
-    public void isEmpty() {
+    void isEmpty() {
         assertTrue(StringUtils.isEmpty(null));
         assertTrue(StringUtils.isEmpty(""));
         assertFalse(StringUtils.isEmpty("123"));
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         assertEquals("null", StringUtils.toString(null));
         assertEquals("123", StringUtils.toString(123));
     }

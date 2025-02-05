@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StringFormatterTest {
+class StringFormatterTest {
     @Test
-    public void format() {
+    void format() {
         assertEquals("awa! Hello, World! awa!", StringFormatter.format("{1}! Hello, {}! {}!", "World", "awa"));
     }
 }
