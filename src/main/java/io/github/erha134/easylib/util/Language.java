@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * 本地化语言类，类似 MC。
  */
+@Deprecated
 public class Language {
     /**
      * {@link Gson} 实例。
