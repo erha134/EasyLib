@@ -1,5 +1,7 @@
 package io.github.erha134.easylib.util;
 
+import io.github.erha134.easylib.stream.StreamUtils;
+
 import java.util.Iterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -8,7 +10,7 @@ import java.util.stream.StreamSupport;
 /**
  * 迭代工具类。
  */
-public class IterateUtils {
+public class IterateUtils extends StreamUtils {
     /**
      * 将迭代器转换为 {@link Stream}。
      * @param it 迭代器
