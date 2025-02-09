@@ -1,7 +1,6 @@
 package io.github.erha134.easylib.reflect;
 
 import io.github.erha134.easylib.string.StringFormatter;
-import io.github.erha134.easylib.annotation.Alias;
 import io.github.erha134.easylib.annotation.Ignore;
 
 import java.lang.reflect.Field;
@@ -27,14 +26,8 @@ public class ReflectUtils {
                 f.setAccessible(true);
             }
 
-            String name = f.getName();
-            Alias alias = f.getAnnotation(Alias.class);
-            if (alias != null) {
-                name = alias.value();
-            }
-
             Class<?> type = f.getType();
-            Object value = map.get(name);
+            Object value = map.get(f.getName());
 
             if (value == null) {
                 continue;
@@ -49,14 +42,18 @@ public class ReflectUtils {
                     f.set(instance, value);  // FIXME
                 } catch (IllegalAccessException e) {
                     throw new IllegalArgumentException(StringFormatter.format("Failed to set value of field {} of class {}",
-                            name, clazz.getCanonicalName()), e);
+                            f.getName(),
+                            clazz.getCanonicalName()),
+                            e);
                 }
             } else {
                 try {
                     f.set(instance, convertToBean(type, (Map<String, Object>) value));
                 } catch (IllegalAccessException e) {
                     throw new IllegalArgumentException(StringFormatter.format("Failed to set value of field {} of class {}",
-                            name, clazz.getCanonicalName()), e);
+                            f.getName(),
+                            clazz.getCanonicalName()),
+                            e);
                 }
             }
         }
@@ -82,27 +79,25 @@ public class ReflectUtils {
                 f.setAccessible(true);
             }
 
-            String name = f.getName();
-            Alias alias = f.getAnnotation(Alias.class);
-            if (alias != null) {
-                name = alias.value();
-            }
-
             Class<?> type = f.getType();
 
             if (type.isPrimitive() || type == List.class || type == Map.class) {
                 try {
-                    map.put(name, f.get(instance));  // FIXME
+                    map.put(f.getName(), f.get(instance));  // FIXME
                 } catch (IllegalAccessException e) {
                     throw new IllegalArgumentException(StringFormatter.format("Failed to get value of field {} of class {}",
-                            name, clazz.getCanonicalName()), e);
+                            f.getName(),
+                            clazz.getCanonicalName()),
+                            e);
                 }
             } else {
                 try {
-                    map.put(name, convertToMap(f.get(instance)));
+                    map.put(f.getName(), convertToMap(f.get(instance)));
                 } catch (IllegalAccessException e) {
                     throw new IllegalArgumentException(StringFormatter.format("Failed to get value of field {} of class {}",
-                            name, clazz.getCanonicalName()), e);
+                            f.getName(),
+                            clazz.getCanonicalName()),
+                            e);
                 }
             }
         }
